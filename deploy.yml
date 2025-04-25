@@ -1,0 +1,26 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install -r backend/requirements.txt
+      - name: Run tests
+        run: |
+          cd backend
+          python manage.py test
+      - name: Build Docker image
+        run: docker build -t merito-backend ./backend
+      - name: Simulate deploy
+        run: echo "Deploy 🎉"
